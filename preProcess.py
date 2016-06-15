@@ -76,7 +76,7 @@ def plot_spec(z):
 
 if __name__ == "__main__":
     output_name = 'tst.mat'
-    filter_banks = process('audio/gg.wav', 4, output_name)
+    filter_banks = process('audio/tst.wav', 1, output_name)
     matdata2 = scipy.io.loadmat(output_name)['out']
     #plot_spec(matdata2)
 
