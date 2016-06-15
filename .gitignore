@@ -60,5 +60,7 @@ docs/_build/
 # PyBuilder
 target/
 
+enfDB*/
+
 #Ipython Notebook
 .ipynb_checkpoints
