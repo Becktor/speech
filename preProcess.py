@@ -4,13 +4,13 @@ import scipy.io.wavfile as sc
 from scipy.fftpack import dct
 import matplotlib.pyplot as plt
 
-def process(s, signal_size):
+def process(s, signal_size, o):
     sample_rate, signal = sc.read(s)  # File assumed to be in the same directory
 
     signal = signal[0:int(signal_size * sample_rate)]  # Keep the first 3.5 seconds
     pre_emphasis = 0.97
     emphasized_signal = np.append(signal[0], signal[1:] - pre_emphasis * signal[:-1])
-    print len(signal)
+
     frame_size = 0.025 # mili seconds
     frame_stride = 0.01 # mili seconds
     frame_length, frame_step = frame_size * sample_rate, frame_stride * sample_rate #Convert from seconds to samples
@@ -56,31 +56,29 @@ def process(s, signal_size):
     filter_banks = 20 * np.log10(filter_banks)  # dB
 
     filter_banks -= (np.mean(filter_banks, axis=0) + 1e-8)
+    scipy.io.savemat(o, mdict = {'out':filter_banks}, oned_as='row')
 
-    #print filter_banks
     return filter_banks
+
 def plot_spec(z):
     k,j = z.shape
     print z.shape
     k=np.arange(0.,k)
     j=np.arange(0.,j)
-
     fig, ax = plt.subplots()
     ax.pcolormesh(z.T)
-
     plt.ylabel('Frequency [kHz]')
     plt.xlabel('Time [sec]')
     plt.show()
+   # plt.savefig('tst.png')
+
+
 
 if __name__ == "__main__":
-
-    filter_banks = process('audio/tst3.wav', 1)
-    f = open('myfile.mat', 'w+')
-    f.close
-    mat='myfile.mat'
-    scipy.io.savemat(mat,mdict={'out':filter_banks},oned_as='row')
-    #plot_spec(filter_banks)
-    matdata2 = scipy.io.loadmat(mat)
+    output_name = 'tst.mat'
+    filter_banks = process('audio/gg.wav', 4, output_name)
+    matdata2 = scipy.io.loadmat(output_name)['out']
+    #plot_spec(matdata2)
 
     # And just to check if the data is the same:
-    print np.all(filter_banks == matdata2['out'])
+    print np.all(filter_banks == matdata2)
