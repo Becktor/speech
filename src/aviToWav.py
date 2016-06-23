@@ -9,16 +9,18 @@ def createFolder ( directory ):
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-def avi_to_wav(oldpath, newpath, sr ,nName, oName):
-    command1 = "ffmpeg -i \""+oldpath+oName+"\" -y -ab 128 -ac 1 -ar "
+def avi_to_wav(oldpath, newpath, sr ,nName, oName, time):
+    command1 = "ffmpeg -i \""+oldpath+oName+"\" -y -ab 128k -ac 1 -ar "
     command2 = str(sr)+" -vn \""+newpath+nName+"\""
     command = command1+command2
 
     subprocess.call(command,shell=True, stdout=devnull, stderr=devnull)
     #subprocess.call(command,shell=True)
+    #preProcess.process(newpath+nName,1 , newpath+nName)
     try:
-        preProcess.process(newpath+nName,1 , newpath+nName+".mat")
+        preProcess.process(newpath+nName,time , newpath+nName)
     except:
+        #print except
         pass
 
     sample_rates = [0.8, 0.9, 1.1, 1.2]
@@ -29,16 +31,17 @@ def avi_to_wav(oldpath, newpath, sr ,nName, oName):
         cmd2 = newpath + str(sample_rates[k])+"_"+nName+"\""
         cmd = cmd1 + cmd2
         subprocess.call(cmd,shell=True,stdout=devnull, stderr=devnull)
+        #subprocess.call(cmd,shell=True)
         try:
-            preProcess.process(newpath + str(sample_rates[k])+"_"+nName ,1 , newpath + str(sample_rates[k])+"_"+nName+".mat")
+            preProcess.process(newpath + str(sample_rates[k])+"_"+nName ,time , newpath + str(sample_rates[k])+"_"+nName)
         except:
             pass
-        #subprocess.call(cmd,shell=True)
+
 
 
 if __name__ == "__main__":
     createFolder("enfDB_Audio")
-    path='/home/jobe/Git/speech/'
+    path='/home/Jobe/Git/speech/'
     feeling = ['anger', 'disgust', 'fear', 'happiness', 'sadness', 'surprise']
     sentence = range(1, 6)
     subject = range(1, 42)
@@ -54,6 +57,7 @@ if __name__ == "__main__":
         tmpVideo = 'enfDB/subject ' + str(sub)
         subPathAudio = path+tmpAudio
         subPathVideo = path+tmpVideo
+        wav_length = 3
         createFolder(subPathAudio)
         for feel in feeling:
             cntr += 1
@@ -76,7 +80,7 @@ if __name__ == "__main__":
                     pass
 
                 wavs=avi_to_wav(numbPathVideo, numbPathAudio,
-                                sample_rate, nameN, nameOld)
+                                sample_rate, nameN, nameOld, wav_length)
 
                 pBar.p100(cntr)
     print "\n[DONE]"
