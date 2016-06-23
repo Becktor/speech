@@ -1,16 +1,19 @@
 import tensorflow as tf
+import scipy
 import scipy.io
 import numpy as np
-trainSet = scipy.io.loadmat('TrainBatch.mat')['out']
-testSet = scipy.io.loadmat('TestBatch.mat')['out']
-from tensorflow.examples.tutorials.mnist import input_data
+#from src import Batch
+print 'started'
+#trainSet = scipy.io.loadmat('TrainBatch.mat')['arr']
+#testSet = scipy.io.loadmat('TestBatch.mat')['arr']
+print 'data loaded'
+#train = Batch(trainSet)
+#test = Batch(testSet)
+print 'data batched'
 
-mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+#mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 
-def batch_to_minibatches(batches):
-    batch=batches[1:,:]
-    labels=batches[1,None]
-    print labels
+
 
 def weight_variable(shape):
     initial = tf.truncated_normal(shape, stddev=0.1)
@@ -27,7 +30,7 @@ def max_pool_2x2(x):
     return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],
                           strides=[1, 2, 2, 1], padding='SAME')
 
-def DNN():
+if __name__ == '__main__':
     sess = tf.InteractiveSession()
     x = tf.placeholder(tf.float32, [None, 4018])
     W = tf.Variable(tf.zeros([4018, 6]))
@@ -71,8 +74,8 @@ def DNN():
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     sess.run(tf.initialize_all_variables())
 
-    for i in range(20000):
-        batch = mnist.train.next_batch(50)
+    for i in range(10000):
+        batch = train.next_batch(10)
 
         if i % 100 == 0:
             train_accuracy = accuracy.eval(feed_dict={
@@ -81,7 +84,4 @@ def DNN():
         train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
 
     print("test accuracy %g" % accuracy.eval(feed_dict={
-                x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0}))
-
-if __name__ == '__main__':
-    batch_to_minibatches()
+                x: test.spectrograms, y_: test.labels, keep_prob: 1.0}))
