@@ -2,10 +2,11 @@ import scipy.io
 import numpy as np
 
 def batch_to_minibatches(batches):
+    size = batches.shape[0]
     batch=batches[:,1:]
     label=batches[:,0]
-    labels=np.zeros((9145,6))
-    for i in range(9145):
+    labels=np.zeros((size,6))
+    for i in range(size):
         labels[i][label[i]]=1.0
     return (batch,labels)
 
@@ -51,9 +52,10 @@ if __name__ == '__main__':
     trainSet = scipy.io.loadmat('TrainBatch.mat')['arr']
     testSet = scipy.io.loadmat('TestBatch.mat')['arr']
 
-    batches = Batch(trainSet)
-    for i in range(10000):
-        batch=batches.next_batch(10)
+
+    batches = Batch(testSet)
+    #for i in range(10000):
+      #  batch=batches.next_batch(10)
        # print batch[0][0]
         #print batches.num_examples
        # perm = np.arange(batches.num_examples)
