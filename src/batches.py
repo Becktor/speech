@@ -42,8 +42,8 @@ def buildBatch():
                                     cntr+=1
 
     #print dataset.shape
-    train=dataset[:9145,:]
-    test=dataset[9145:13065,:]
+    train=dataset[:8400,:]
+    test=dataset[8400:13065,:]
     #print test
     scipy.io.savemat('TrainBatch.mat', mdict = {'arr':train})
     scipy.io.savemat('TestBatch.mat', mdict = {'arr':test})

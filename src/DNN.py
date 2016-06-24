@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
     sess.run(tf.initialize_all_variables())
 
-    for i in range(10000):
+    for i in range(5000):
         batch = train.next_batch(10)
 
         #print batch[0].shape
