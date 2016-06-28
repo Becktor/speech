@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
     sess.run(tf.initialize_all_variables())
 
-    for i in range(5000):
+    for i in range(500):
         batch = train.next_batch(10)
 
         #print batch[0].shape
@@ -105,8 +105,11 @@ if __name__ == '__main__':
             print("step %d, training accuracy %g" % (i, train_accuracy))
         train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
     print('testing now')
-
+    suma=0.
+    cntr=0.
     for i in range(400):
         tbatch = test.next_batch(10)
-        print("test accuracy %g" % accuracy.eval(feed_dict={
-                x: tbatch[0], y_: tbatch[1], keep_prob: 1.0}))
+        cntr +=1
+        suma += accuracy.eval(feed_dict={
+                x: tbatch[0], y_: tbatch[1], keep_prob: 1.0})
+    print("test accuracy %g" % suma/cntr)
