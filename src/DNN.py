@@ -109,4 +109,4 @@ if __name__ == '__main__':
     for i in range(400):
         tbatch = test.next_batch(100)
         print("test accuracy %g" % accuracy.eval(feed_dict={
-                x: tbatch[0], y_: tbatch[y], keep_prob: 1.0}))
+                x: tbatch[0], y_: tbatch[1], keep_prob: 1.0}))
