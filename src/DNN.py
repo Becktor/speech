@@ -105,5 +105,8 @@ if __name__ == '__main__':
             print("step %d, training accuracy %g" % (i, train_accuracy))
         train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
     print('testing now')
-    print("test accuracy %g" % accuracy.eval(feed_dict={
-                x: test.spectrograms, y_: test.labels, keep_prob: 1.0}))
+
+    for i in range(400):
+        tbatch = test.next_batch(100)
+        print("test accuracy %g" % accuracy.eval(feed_dict={
+                x: tbatch.spectrograms, y_: tbatch.labels, keep_prob: 1.0}))
