@@ -110,6 +110,8 @@ if __name__ == '__main__':
     for i in range(400):
         tbatch = test.next_batch(10)
         cntr +=1
-        suma=accuracy.eval(feed_dict={x: tbatch[0], y_: tbatch[1], keep_prob: 1.0})
+        suma += accuracy.eval(feed_dict={x: tbatch[0], y_: tbatch[1], keep_prob: 1.0})
     val = suma/cntr
+    print suma
+    print
     print("test accuracy %g" % (val))
