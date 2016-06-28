@@ -107,6 +107,6 @@ if __name__ == '__main__':
     print('testing now')
 
     for i in range(400):
-        tbatch = test.next_batch(100)
+        tbatch = test.next_batch(10)
         print("test accuracy %g" % accuracy.eval(feed_dict={
                 x: tbatch[0], y_: tbatch[1], keep_prob: 1.0}))
