@@ -41,27 +41,27 @@ if __name__ == '__main__':
 
     # Multilayer Convolutional Network
     # First Layer
-    W_conv1 = weight_variable([5, 5, 1, 512])
-    b_conv1 = bias_variable([512])
+    W_conv1 = weight_variable([5, 5, 1, 64])
+    b_conv1 = bias_variable([64])
     x_image = tf.reshape(x, [-1, 65, 41, 1])
     h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)
     h_pool1 = max_pool_2x2(h_conv1)
 
 
     # Second Layer
-    W_conv2 = weight_variable([5, 5, 512, 512])
-    b_conv2 = bias_variable([512])
+    W_conv2 = weight_variable([5, 5, 64, 128])
+    b_conv2 = bias_variable([128])
     h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)
     h_pool2 = max_pool_2x2(h_conv2)
 
     # Third Layer
-    W_conv3 = weight_variable([5, 5, 512, 512])
-    b_conv3 = bias_variable([512])
+    W_conv3 = weight_variable([5, 5, 128, 256])
+    b_conv3 = bias_variable([256])
     h_conv3 = tf.nn.relu(conv2d(h_pool2, W_conv3) + b_conv3)
     h_pool3 = max_pool_2x2(h_conv3)
 
     # Fourth Layer
-    W_conv4 = weight_variable([5, 5, 512, 512])
+    W_conv4 = weight_variable([5, 5, 256, 512])
     b_conv4 = bias_variable([512])
     h_conv4 = tf.nn.relu(conv2d(h_pool3, W_conv4) + b_conv4)
     h_pool4 = max_pool_2x2(h_conv4)
