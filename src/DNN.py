@@ -74,7 +74,7 @@ if __name__ == '__main__':
     W_fc1 = weight_variable([7*3*512, 2048])
     b_fc1 = bias_variable([2048])
 
-    h_pool4_flat = tf.reshape(h_pool4, [-1, 7*3*1024])
+    h_pool4_flat = tf.reshape(h_pool4, [-1, 7*3*512])
     h_fc1 = tf.nn.relu(tf.matmul(h_pool4_flat, W_fc1) + b_fc1)
 
     # Dropout
