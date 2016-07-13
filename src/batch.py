@@ -41,7 +41,7 @@ class Batch:
     def num_examples(self):
         return self._num_examples
     @property
-    def spectrograms(self):
+    def images(self):
         return self._spec
 
     @property
