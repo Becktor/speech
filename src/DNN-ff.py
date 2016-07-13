@@ -13,19 +13,19 @@ import scipy.io
 import numpy as np
 import batch
 #print 'started'
-#trainSet = scipy.io.loadmat('TrainBatch2.mat')['arr']
-#testSet = scipy.io.loadmat('TestBatch2.mat')['arr']
+trainSet = scipy.io.loadmat('TrainBatch.mat')['arr']
+testSet = scipy.io.loadmat('TestBatch.mat')['arr']
 #print 'data loaded'
-#train = batch.Batch(trainSet)
+train = batch.Batch(trainSet)
 #print 'train batched'
-#test = batch.Batch(testSet)
+test = batch.Batch(testSet)
 #print 'data batched'
 # Import MINST data
-from tensorflow.examples.tutorials.mnist import input_data
-mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
-train = mnist.train
-test = mnist.test
-#mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+#from tensorflow.examples.tutorials.mnist import input_data
+#mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
+#train = mnist.train
+#test = mnist.test
+
 
 
 
