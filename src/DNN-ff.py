@@ -25,7 +25,7 @@ test = batch.Batch(testSet)
 #mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
 #train = mnist.train
 #test = mnist.test
-
+#mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 
 
 
@@ -106,6 +106,10 @@ optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 # Initializing the variables
 init = tf.initialize_all_variables()
 # Test model
+correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
+# Calculate accuracy
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
+
 
 
 # Launch the graph
@@ -130,8 +134,9 @@ with tf.Session() as sess:
             print "Epoch:", '%04d' % (epoch+1), "cost=", \
                 "{:.9f}".format(avg_cost)
             print "Accuracy:", accuracy.eval({x: train.images, y: train.labels})
-
+            #print "Accuracy:", accuracy.eval({x: train.spectrograms, y: train.labels})
     print "Optimization Finished!"
 
 
     print "Accuracy:", accuracy.eval({x: test.images, y: test.labels})
+    #print "Accuracy:", accuracy.eval({x: test.spectrograms, y: test.labels})
