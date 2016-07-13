@@ -32,11 +32,11 @@ batch_size = 128
 display_step = 10
 
 # Network Parameters
-n_hidden_1 = 256 # 1st layer number of features
-n_hidden_2 = 256 # 2nd layer number of features
-n_hidden_3 = 256 # 3rd layer number of features
-n_hidden_4 = 256 # 4th layer number of features
-n_hidden_5 = 256 # 5th layer number of features
+n_hidden_1 = 2025 # 1st layer number of features
+n_hidden_2 = 2025 # 2nd layer number of features
+n_hidden_3 = 2025 # 3rd layer number of features
+n_hidden_4 = 2025 # 4th layer number of features
+n_hidden_5 = 2025 # 5th layer number of features
 
 n_input = 4018   # Dataset data input (img shape: 98*41)
 n_classes = 6    # Dataset total classes (6 emotions)
