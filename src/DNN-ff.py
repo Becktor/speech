@@ -133,4 +133,4 @@ with tf.Session() as sess:
     print "Optimization Finished!"
 
 
-    print "Accuracy:", accuracy.eval({x: test.spectrograms, y: test.labels})
+    print "Accuracy:", accuracy.eval({x: train.spectrograms, y: train.labels})
