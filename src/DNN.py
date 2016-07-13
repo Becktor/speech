@@ -4,8 +4,8 @@ import scipy.io
 import numpy as np
 import batch
 #print 'started'
-trainSet = scipy.io.loadmat('TrainBatch.mat')['arr']
-testSet = scipy.io.loadmat('TestBatch.mat')['arr']
+trainSet = scipy.io.loadmat('TrainBatch2.mat')['arr']
+testSet = scipy.io.loadmat('TestBatch2.mat')['arr']
 #print 'data loaded'
 train = batch.Batch(trainSet)
 #print 'train batched'
@@ -33,8 +33,8 @@ def max_pool_2x2(x):
 
 if __name__ == '__main__':
     sess = tf.InteractiveSession()
-    x = tf.placeholder(tf.float32, [None, 2665])
-    W = tf.Variable(tf.zeros([2665, 6]))
+    x = tf.placeholder(tf.float32, [None, 4018])
+    W = tf.Variable(tf.zeros([4018, 6]))
     b = tf.Variable(tf.zeros([6]))
     y_ = tf.placeholder(tf.float32, [None, 6])
     y = tf.nn.softmax(tf.matmul(x, W) + b)
@@ -43,58 +43,60 @@ if __name__ == '__main__':
     # First Layer
     W_conv1 = weight_variable([5, 5, 1, 128])
     b_conv1 = bias_variable([128])
-    x_image = tf.reshape(x, [-1, 65, 41, 1])
+    x_image = tf.reshape(x, [-1, 98, 41, 1])
     h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)
     h_pool1 = max_pool_2x2(h_conv1)
 
 
     # Second Layer
-    W_conv2 = weight_variable([5, 5, 128, 256])
-    b_conv2 = bias_variable([256])
+    W_conv2 = weight_variable([5, 5, 128, 128])
+    b_conv2 = bias_variable([128])
     h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)
     h_pool2 = max_pool_2x2(h_conv2)
 
     # Third Layer
-    W_conv3 = weight_variable([5, 5, 256, 512])
-    b_conv3 = bias_variable([512])
+    W_conv3 = weight_variable([5, 5, 128,256])
+    b_conv3 = bias_variable([256])
     h_conv3 = tf.nn.relu(conv2d(h_pool2, W_conv3) + b_conv3)
     h_pool3 = max_pool_2x2(h_conv3)
 
     # Fourth Layer
-    W_conv4 = weight_variable([5, 5, 512, 1024])
-    b_conv4 = bias_variable([1024])
+    W_conv4 = weight_variable([5, 5, 256, 256])
+    b_conv4 = bias_variable([256])
     h_conv4 = tf.nn.relu(conv2d(h_pool3, W_conv4) + b_conv4)
     h_pool4 = max_pool_2x2(h_conv4)
+    print h_pool4.get_shape()
+
 
 
 
     # Fully Connected Layer
-    W_fc1 = weight_variable([48 * 50 * 64, 2048])
-    b_fc1 = bias_variable([2048])
+    W_fc1 = weight_variable([7*3*256, 1024])
+    b_fc1 = bias_variable([1024])
 
-    h_pool4_flat = tf.reshape(h_pool4, [-1, 48*50*64])
+    h_pool4_flat = tf.reshape(h_pool4, [-1, 7*3*256])
     h_fc1 = tf.nn.relu(tf.matmul(h_pool4_flat, W_fc1) + b_fc1)
 
     # Dropout
     keep_prob = tf.placeholder(tf.float32)
     h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
-    W_fc2 = weight_variable([2048, 6])
+    # Readout
+    W_fc2 = weight_variable([1024, 6])
     b_fc2 = bias_variable([6])
-    #print 'here'
     y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
 
-    #cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y_conv), reduction_indices=[1]))
-    cross_entropy = -tf.reduce_sum(y_ * tf.log(tf.clip_by_value(y_conv, 1e-10, 1.0)))
+    cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y_conv), reduction_indices=[1]))
+    #cross_entropy = -tf.reduce_sum(y_ * tf.log(tf.clip_by_value(y_conv, 1e-10, 1.0)))
     #cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logit, y_))
     train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
     correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-    ####print "y_ shape:", y_conv.get_shape()#print accuracy
+
 
     sess.run(tf.initialize_all_variables())
 
-    for i in range(5000):
-        batch = train.next_batch(10)
+    for i in range(3000):
+        batch = train.next_batch(40)
 
         #print batch[0].shape
         #print batch[1].shape
@@ -108,7 +110,7 @@ if __name__ == '__main__':
     suma=0.
     cntr=0.
     for i in range(400):
-        tbatch = test.next_batch(10)
+        tbatch = test.next_batch(40)
         cntr +=1
         suma += accuracy.eval(feed_dict={x: tbatch[0], y_: tbatch[1], keep_prob: 1.0})
     val = suma/cntr
