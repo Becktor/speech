@@ -55,14 +55,14 @@ if __name__ == '__main__':
     h_pool2 = max_pool_2x2(h_conv2)
     print h_pool2.get_shape()
     # Third Layer
-    W_conv3 = weight_variable([5, 5, 256,512])
-    b_conv3 = bias_variable([512])
+    W_conv3 = weight_variable([5, 5, 256,256])
+    b_conv3 = bias_variable([256])
     h_conv3 = tf.nn.relu(conv2d(h_pool2, W_conv3) + b_conv3)
     h_pool3 = max_pool_2x2(h_conv3)
     print h_pool3.get_shape()
     # Fourth Layer
-    W_conv4 = weight_variable([5, 5, 512, 512])
-    b_conv4 = bias_variable([512])
+    W_conv4 = weight_variable([5, 5, 256, 256])
+    b_conv4 = bias_variable([256])
     h_conv4 = tf.nn.relu(conv2d(h_pool3, W_conv4) + b_conv4)
     h_pool4 = max_pool_2x2(h_conv4)
     print h_pool4.get_shape()
@@ -71,17 +71,17 @@ if __name__ == '__main__':
 
 
     # Fully Connected Layer
-    W_fc1 = weight_variable([7*3*512, 1024])
-    b_fc1 = bias_variable([1024])
+    W_fc1 = weight_variable([7*3*256, 2048])
+    b_fc1 = bias_variable([2048])
 
-    h_pool4_flat = tf.reshape(h_pool4, [-1, 7*3*512])
+    h_pool4_flat = tf.reshape(h_pool4, [-1, 7*3*256])
     h_fc1 = tf.nn.relu(tf.matmul(h_pool4_flat, W_fc1) + b_fc1)
 
     # Dropout
     keep_prob = tf.placeholder(tf.float32)
     h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
     # Readout
-    W_fc2 = weight_variable([1024, 6])
+    W_fc2 = weight_variable([2048, 6])
     b_fc2 = bias_variable([6])
     y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
 
