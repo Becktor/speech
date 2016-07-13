@@ -101,6 +101,12 @@ optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 #optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 # Initializing the variables
 init = tf.initialize_all_variables()
+# Test model
+correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
+# Calculate accuracy
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
+
+
 
 # Launch the graph
 with tf.Session() as sess:
@@ -118,14 +124,13 @@ with tf.Session() as sess:
                                                           y: batch_y})
             # Compute average loss
             avg_cost += c / total_batch
+
         # Display logs per epoch step
         if epoch % display_step == 0:
             print "Epoch:", '%04d' % (epoch+1), "cost=", \
                 "{:.9f}".format(avg_cost)
+            print "Accuracy:", accuracy.eval({x: train.spectrograms, y: train.labels})
     print "Optimization Finished!"
 
-    # Test model
-    correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
-    # Calculate accuracy
-    accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
+
     print "Accuracy:", accuracy.eval({x: test.spectrograms, y: test.labels})
