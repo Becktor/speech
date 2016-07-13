@@ -61,8 +61,8 @@ if __name__ == '__main__':
     h_pool3 = max_pool_2x2(h_conv3)
     print h_pool3.get_shape()
     # Fourth Layer
-    W_conv4 = weight_variable([5, 5, 512, 1024])
-    b_conv4 = bias_variable([1024])
+    W_conv4 = weight_variable([5, 5, 512, 512])
+    b_conv4 = bias_variable([512])
     h_conv4 = tf.nn.relu(conv2d(h_pool3, W_conv4) + b_conv4)
     h_pool4 = max_pool_2x2(h_conv4)
     print h_pool4.get_shape()
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
 
     # Fully Connected Layer
-    W_fc1 = weight_variable([7*3*1024, 2048])
+    W_fc1 = weight_variable([7*3*512, 2048])
     b_fc1 = bias_variable([2048])
 
     h_pool4_flat = tf.reshape(h_pool4, [-1, 7*3*1024])
