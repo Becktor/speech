@@ -46,23 +46,23 @@ if __name__ == '__main__':
     x_image = tf.reshape(x, [-1, 98, 41, 1])
     h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)
     h_pool1 = max_pool_2x2(h_conv1)
-
+    print h_pool1.get_shape()
 
     # Second Layer
-    W_conv2 = weight_variable([5, 5, 128, 128])
-    b_conv2 = bias_variable([128])
+    W_conv2 = weight_variable([5, 5, 128, 256])
+    b_conv2 = bias_variable([256])
     h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)
     h_pool2 = max_pool_2x2(h_conv2)
-
+    print h_pool2.get_shape()
     # Third Layer
-    W_conv3 = weight_variable([5, 5, 128,256])
-    b_conv3 = bias_variable([256])
+    W_conv3 = weight_variable([5, 5, 256,512])
+    b_conv3 = bias_variable([512])
     h_conv3 = tf.nn.relu(conv2d(h_pool2, W_conv3) + b_conv3)
     h_pool3 = max_pool_2x2(h_conv3)
-
+    print h_pool3.get_shape()
     # Fourth Layer
-    W_conv4 = weight_variable([5, 5, 256, 256])
-    b_conv4 = bias_variable([256])
+    W_conv4 = weight_variable([5, 5, 512, 1024])
+    b_conv4 = bias_variable([1024])
     h_conv4 = tf.nn.relu(conv2d(h_pool3, W_conv4) + b_conv4)
     h_pool4 = max_pool_2x2(h_conv4)
     print h_pool4.get_shape()
@@ -71,24 +71,25 @@ if __name__ == '__main__':
 
 
     # Fully Connected Layer
-    W_fc1 = weight_variable([7*3*256, 1024])
-    b_fc1 = bias_variable([1024])
+    W_fc1 = weight_variable([7*3*1024, 2048])
+    b_fc1 = bias_variable([2048])
 
-    h_pool4_flat = tf.reshape(h_pool4, [-1, 7*3*256])
+    h_pool4_flat = tf.reshape(h_pool4, [-1, 7*3*1024])
     h_fc1 = tf.nn.relu(tf.matmul(h_pool4_flat, W_fc1) + b_fc1)
 
     # Dropout
     keep_prob = tf.placeholder(tf.float32)
     h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
     # Readout
-    W_fc2 = weight_variable([1024, 6])
+    W_fc2 = weight_variable([2048, 6])
     b_fc2 = bias_variable([6])
     y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
 
-    cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y_conv), reduction_indices=[1]))
-    #cross_entropy = -tf.reduce_sum(y_ * tf.log(tf.clip_by_value(y_conv, 1e-10, 1.0)))
+    #cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y_conv), reduction_indices=[1]))
+    cross_entropy = -tf.reduce_sum(y_ * tf.log(tf.clip_by_value(y_conv, 1e-10, 1.0)),reduction_indices=[1])
     #cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logit, y_))
-    train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
+    #train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
+    train_step = tf.train.GradientDescentOptimizer(0.05).minimize(cross_entropy)
     correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
@@ -96,7 +97,7 @@ if __name__ == '__main__':
     sess.run(tf.initialize_all_variables())
 
     for i in range(3000):
-        batch = train.next_batch(50)
+        batch = train.next_batch(128)
 
         #print batch[0].shape
         #print batch[1].shape
@@ -110,7 +111,7 @@ if __name__ == '__main__':
     suma=0.
     cntr=0.
     for i in range(400):
-        tbatch = test.next_batch(50)
+        tbatch = test.next_batch(128)
         cntr +=1
         suma += accuracy.eval(feed_dict={x: tbatch[0], y_: tbatch[1], keep_prob: 1.0})
     val = suma/cntr
