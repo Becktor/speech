@@ -71,8 +71,8 @@ if __name__ == '__main__':
 
 
     # Fully Connected Layer
-    W_fc1 = weight_variable([7*3*512, 2048])
-    b_fc1 = bias_variable([2048])
+    W_fc1 = weight_variable([7*3*512, 1024])
+    b_fc1 = bias_variable([1024])
 
     h_pool4_flat = tf.reshape(h_pool4, [-1, 7*3*512])
     h_fc1 = tf.nn.relu(tf.matmul(h_pool4_flat, W_fc1) + b_fc1)
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     keep_prob = tf.placeholder(tf.float32)
     h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
     # Readout
-    W_fc2 = weight_variable([2048, 6])
+    W_fc2 = weight_variable([1024, 6])
     b_fc2 = bias_variable([6])
     y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
 
@@ -97,7 +97,7 @@ if __name__ == '__main__':
     sess.run(tf.initialize_all_variables())
 
     for i in range(3000):
-        batch = train.next_batch(100)
+        batch = train.next_batch(128)
 
         #print batch[0].shape
         #print batch[1].shape
@@ -111,7 +111,7 @@ if __name__ == '__main__':
     suma=0.
     cntr=0.
     for i in range(400):
-        tbatch = test.next_batch(100)
+        tbatch = test.next_batch(128)
         cntr +=1
         suma += accuracy.eval(feed_dict={x: tbatch[0], y_: tbatch[1], keep_prob: 1.0})
     val = suma/cntr
