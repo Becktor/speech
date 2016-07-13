@@ -26,8 +26,8 @@ test = batch.Batch(testSet)
 
 
 # Parameters
-learning_rate = 0.05
-training_epochs = 200
+learning_rate = 0.001
+training_epochs = 100
 batch_size = 128
 display_step = 10
 dropout=0.5
