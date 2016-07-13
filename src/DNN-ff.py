@@ -26,7 +26,7 @@ test = batch.Batch(testSet)
 
 
 # Parameters
-learning_rate = 0.001
+learning_rate = 0.05
 training_epochs = 600
 batch_size = 128
 display_step = 10
@@ -55,13 +55,13 @@ def multilayer_perceptron(x, weights, biases):
     layer_2 = tf.add(tf.matmul(layer_1, weights['h2']), biases['b2'])
     layer_2 = tf.nn.relu(layer_2)
     # Hidden layer with RELU activation
-    layer_3 = tf.add(tf.matmul(layer_2, weights['h2']), biases['b2'])
+    layer_3 = tf.add(tf.matmul(layer_2, weights['h3']), biases['b3'])
     layer_3 = tf.nn.relu(layer_3)
     # Hidden layer with RELU activation
-    layer_4 = tf.add(tf.matmul(layer_3, weights['h2']), biases['b2'])
+    layer_4 = tf.add(tf.matmul(layer_3, weights['h4']), biases['b4'])
     layer_4 = tf.nn.relu(layer_4)
     # Hidden layer with RELU activation
-    layer_5 = tf.add(tf.matmul(layer_4, weights['h2']), biases['b2'])
+    layer_5 = tf.add(tf.matmul(layer_4, weights['h5']), biases['b5'])
     layer_5 = tf.nn.relu(layer_5)
 
     # Output layer with linear activation
@@ -91,8 +91,8 @@ pred = multilayer_perceptron(x, weights, biases)
 
 # Define loss and optimizer
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(pred, y))
-optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
-
+#optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
+optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 # Initializing the variables
 init = tf.initialize_all_variables()
 
