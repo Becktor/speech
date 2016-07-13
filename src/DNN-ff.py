@@ -91,8 +91,8 @@ pred = multilayer_perceptron(x, weights, biases)
 
 # Define loss and optimizer
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(pred, y))
-#optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
-optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
+optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
+#optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 # Initializing the variables
 init = tf.initialize_all_variables()
 
