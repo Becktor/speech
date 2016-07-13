@@ -96,7 +96,7 @@ if __name__ == '__main__':
     sess.run(tf.initialize_all_variables())
 
     for i in range(3000):
-        batch = train.next_batch(40)
+        batch = train.next_batch(50)
 
         #print batch[0].shape
         #print batch[1].shape
@@ -110,7 +110,7 @@ if __name__ == '__main__':
     suma=0.
     cntr=0.
     for i in range(400):
-        tbatch = test.next_batch(40)
+        tbatch = test.next_batch(50)
         cntr +=1
         suma += accuracy.eval(feed_dict={x: tbatch[0], y_: tbatch[1], keep_prob: 1.0})
     val = suma/cntr
