@@ -13,14 +13,18 @@ import scipy.io
 import numpy as np
 import batch
 #print 'started'
-trainSet = scipy.io.loadmat('TrainBatch2.mat')['arr']
-testSet = scipy.io.loadmat('TestBatch2.mat')['arr']
+#trainSet = scipy.io.loadmat('TrainBatch2.mat')['arr']
+#testSet = scipy.io.loadmat('TestBatch2.mat')['arr']
 #print 'data loaded'
-train = batch.Batch(trainSet)
+#train = batch.Batch(trainSet)
 #print 'train batched'
-test = batch.Batch(testSet)
+#test = batch.Batch(testSet)
 #print 'data batched'
-
+# Import MINST data
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
+train = mnist.train
+test = mnist.test
 #mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 
 
@@ -39,8 +43,8 @@ n_hidden_3 = 256 # 3rd layer number of features
 n_hidden_4 = 256 # 4th layer number of features
 n_hidden_5 = 256 # 5th layer number of features
 
-n_input = 4018   # Dataset data input (img shape: 98*41)
-n_classes = 6    # Dataset total classes (6 emotions)
+n_input = 784   # Dataset data input (img shape: 98*41)
+n_classes = 10    # Dataset total classes (6 emotions)
 
 # tf Graph input
 x = tf.placeholder("float", [None, n_input])
@@ -129,8 +133,10 @@ with tf.Session() as sess:
         if epoch % display_step == 0:
             print "Epoch:", '%04d' % (epoch+1), "cost=", \
                 "{:.9f}".format(avg_cost)
-            print "Accuracy:", accuracy.eval({x: train.spectrograms, y: train.labels})
+            print "Accuracy:", accuracy.eval({x: train.images, y: train.labels})
+            #print "Accuracy:", accuracy.eval({x: train.spectrograms, y: train.labels})
     print "Optimization Finished!"
 
 
-    print "Accuracy:", accuracy.eval({x: train.spectrograms, y: train.labels})
+    print "Accuracy:", accuracy.eval({x: test.images, y: test.labels})
+    #print "Accuracy:", accuracy.eval({x: test.spectrograms, y: test.labels})
