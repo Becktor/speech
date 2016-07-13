@@ -29,7 +29,7 @@ test = batch.Batch(testSet)
 learning_rate = 0.001
 training_epochs = 600
 batch_size = 128
-display_step = 100
+display_step = 10
 
 # Network Parameters
 n_hidden_1 = 256 # 1st layer number of features
