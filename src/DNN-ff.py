@@ -47,11 +47,11 @@ def multilayer_perceptron(x, weights, biases):
     # Hidden layer with RELU activation
     layer_1 = tf.add(tf.matmul(x, weights['h1']), biases['b1'])
     layer_1 = tf.nn.relu(layer_1)
-    layer_1 = tf.nn.dropout(layer_1, 0.70)
+    layer_1 = tf.nn.dropout(layer_1, 0.9)
     # Hidden layer with RELU activation
     layer_2 = tf.add(tf.matmul(layer_1, weights['h2']), biases['b2'])
     layer_2 = tf.nn.relu(layer_2)
-    #layer_2 = tf.nn.dropout(layer_2, dropout)
+    layer_2 = tf.nn.dropout(layer_2, dropout)
     # Hidden layer with RELU activation
     layer_3 = tf.add(tf.matmul(layer_2, weights['h3']), biases['b3'])
     layer_3 = tf.nn.relu(layer_3)
