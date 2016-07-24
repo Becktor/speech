@@ -31,11 +31,11 @@ display_step = 10
 dropout=0.9
 
 # Network Parameters
-n_hidden_1 = 128 # 1st layer number of features
-n_hidden_2 = 128 # 2nd layer number of features
-n_hidden_3 = 128 # 3rd layer number of features
-n_hidden_4 = 128 # 4th layer number of features
-n_hidden_5 = 128 # 5th layer number of features
+n_hidden_1 = 512 # 1st layer number of features
+n_hidden_2 = 512 # 2nd layer number of features
+n_hidden_3 = 512 # 3rd layer number of features
+n_hidden_4 = 512 # 4th layer number of features
+n_hidden_5 = 512 # 5th layer number of features
 
 n_input = 4018   # Dataset data input (img shape: 98*41)
 n_classes = 6    # Dataset total classes (6 emotions)
