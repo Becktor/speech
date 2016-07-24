@@ -3,6 +3,7 @@ import scipy
 import scipy.io
 import numpy as np
 import batch
+import time
 #print 'started'
 trainSet = scipy.io.loadmat('TrainBatch2.mat')['arr']
 testSet = scipy.io.loadmat('TestBatch2.mat')['arr']
@@ -17,6 +18,8 @@ test = batch.Batch(testSet)
 #train = mnist.train
 #test = mnist.test
 #mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+
+start_time = time.time()
 
 
 
@@ -128,8 +131,7 @@ with tf.Session() as sess:
             print "Accuracy:", accuracy.eval({x: train.images, y: train.labels})
             #print "Accuracy:", accuracy.eval({x: train.spectrograms, y: train.labels})
     print "Optimization Finished!"
-
-
     print "Accuracy:", accuracy.eval({x: test.images, y: test.labels})
     print "Accuracy:", accuracy.eval({x: train.images, y: train.labels})
     #print "Accuracy:", accuracy.eval({x: test.spectrograms, y: test.labels})
+    print("--- %s seconds ---" % (time.time() - start_time))
