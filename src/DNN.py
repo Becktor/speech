@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
     # Dropout
     keep_prob = tf.placeholder(tf.float32)
-    h_fc1_drop = tf.nn.dropout(h_fc1, 0.9)
+    h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
     # Readout
     W_fc2 = weight_variable([1024, 6])
     b_fc2 = bias_variable([6])
@@ -106,7 +106,7 @@ if __name__ == '__main__':
             train_accuracy = accuracy.eval(feed_dict={
                     x: batch[0], y_: batch[1], keep_prob: 1.0})
             print("step %d, training accuracy %g" % (i, train_accuracy))
-        train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
+        train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.9})
     print('testing now')
     suma=0.
     cntr=0.
