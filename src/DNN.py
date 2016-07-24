@@ -71,17 +71,17 @@ if __name__ == '__main__':
 
 
     # Fully Connected Layer
-    W_fc1 = weight_variable([7*3*256, 2048])
-    b_fc1 = bias_variable([2048])
+    W_fc1 = weight_variable([7*3*256, 1024])
+    b_fc1 = bias_variable([1024])
 
     h_pool4_flat = tf.reshape(h_pool4, [-1, 7*3*256])
     h_fc1 = tf.nn.relu(tf.matmul(h_pool4_flat, W_fc1) + b_fc1)
 
     # Dropout
     keep_prob = tf.placeholder(tf.float32)
-    h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
+    h_fc1_drop = tf.nn.dropout(h_fc1, 0.9)
     # Readout
-    W_fc2 = weight_variable([2048, 6])
+    W_fc2 = weight_variable([1024, 6])
     b_fc2 = bias_variable([6])
     y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
 

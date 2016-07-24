@@ -1,20 +1,11 @@
-'''
-A Multilayer Perceptron implementation example using TensorFlow library.
-This example is using the MNIST database of handwritten digits
-(http://yann.lecun.com/exdb/mnist/)
-
-Author: Aymeric Damien
-Project: https://github.com/aymericdamien/TensorFlow-Examples/
-'''
-
 import tensorflow as tf
 import scipy
 import scipy.io
 import numpy as np
 import batch
 #print 'started'
-trainSet = scipy.io.loadmat('TrainBatch.mat')['arr']
-testSet = scipy.io.loadmat('TestBatch.mat')['arr']
+trainSet = scipy.io.loadmat('TrainBatch2.mat')['arr']
+testSet = scipy.io.loadmat('TestBatch2.mat')['arr']
 #print 'data loaded'
 train = batch.Batch(trainSet)
 #print 'train batched'
@@ -37,13 +28,13 @@ display_step = 10
 dropout=0.5
 
 # Network Parameters
-n_hidden_1 = 256 # 1st layer number of features
-n_hidden_2 = 256 # 2nd layer number of features
-n_hidden_3 = 256 # 3rd layer number of features
-n_hidden_4 = 256 # 4th layer number of features
-n_hidden_5 = 256 # 5th layer number of features
+n_hidden_1 = 2048 # 1st layer number of features
+n_hidden_2 = 2048 # 2nd layer number of features
+n_hidden_3 = 2048 # 3rd layer number of features
+n_hidden_4 = 2048 # 4th layer number of features
+n_hidden_5 = 2048 # 5th layer number of features
 
-n_input = 2665   # Dataset data input (img shape: 98*41)
+n_input = 4018   # Dataset data input (img shape: 98*41)
 n_classes = 6    # Dataset total classes (6 emotions)
 
 # tf Graph input
@@ -56,7 +47,7 @@ def multilayer_perceptron(x, weights, biases):
     # Hidden layer with RELU activation
     layer_1 = tf.add(tf.matmul(x, weights['h1']), biases['b1'])
     layer_1 = tf.nn.relu(layer_1)
-    #layer_1 = tf.nn.dropout(layer_1, 0.9)
+    layer_1 = tf.nn.dropout(layer_1, 0.70)
     # Hidden layer with RELU activation
     layer_2 = tf.add(tf.matmul(layer_1, weights['h2']), biases['b2'])
     layer_2 = tf.nn.relu(layer_2)
@@ -72,10 +63,11 @@ def multilayer_perceptron(x, weights, biases):
     # Hidden layer with RELU activation
     layer_5 = tf.add(tf.matmul(layer_4, weights['h5']), biases['b5'])
     layer_5 = tf.nn.relu(layer_5)
-    #layer_5 = tf.nn.dropout(layer_5, dropout)
+    #layer_5 = tf.nn.dropout(layer_5, 0.9)
 
     # Output layer with linear activation
     out_layer = tf.matmul(layer_5, weights['out']) + biases['out']
+    #out_layer = tf.nn.dropout(out_layer, 0.5)
     return out_layer
 
 # Store layers weight & bias
@@ -139,4 +131,5 @@ with tf.Session() as sess:
 
 
     print "Accuracy:", accuracy.eval({x: test.images, y: test.labels})
+    print "Accuracy:", accuracy.eval({x: train.images, y: train.labels})
     #print "Accuracy:", accuracy.eval({x: test.spectrograms, y: test.labels})
