@@ -49,7 +49,7 @@ if __name__ == '__main__':
     print h_pool1.get_shape()
 
     # Second Layer
-    W_conv2 = weight_variable([3, 3, 128, 256])
+    W_conv2 = weight_variable([3, 3, 256, 256])
     b_conv2 = bias_variable([256])
     h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)
     h_pool2 = max_pool_2x2(h_conv2)
